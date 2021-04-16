@@ -1,3 +1,20 @@
-# nextjs-tailwind-ts
+# nextjs-fauna
 
-Just my personal starter for NextJS w/ Tailwind in Typescript
+This is just a sample implementation of NextJs and bare-FaunaDB authentication.
+
+## Development
+
+- Clone the project
+- Setup your `.env.local`
+  ```
+  SECRET_TOKEN=
+  FAUNADB_SECRET_KEY=
+  ```
+- Run development
+  ```
+  yarn dev
+  ```
+
+##
+
+### &copy; 2021 | TheBoringDude
