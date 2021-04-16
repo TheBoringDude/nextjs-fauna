@@ -3,11 +3,11 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 import { encrypt, decrypt } from '../iron';
 
-const TOKEN_NAME = 'fauna-sample-auth-session'; // replace this with the name of your app, if you want to
+const TOKEN_NAME = 'session'; // replace this with the name of your app, if you want to
 const MAX_AGE_EXPIRES = 60 * 60 * 12; // expires in '12' hours
 const DefaultCookieOpsBase = {
   httpOnly: true,
-  secure: true,
+  secure: process.env.NODE_ENV === 'production', // will be false if in development,
   sameSite: 'lax',
   path: '/'
 };
@@ -33,13 +33,16 @@ const createSession = async (res: NextApiResponse, data) => {
     ...c
   });
 
+  console.log(cookie);
+
   res.setHeader('Set-Cookie', cookie);
 };
 
 // gets the session from the cookie
 const getSession = async (req: NextApiRequest) => {
   const cookies = parseCookies(req);
-  return decrypt(cookies?.[TOKEN_NAME]);
+  console.log(await decrypt(cookies?.[TOKEN_NAME]));
+  return await decrypt(cookies?.[TOKEN_NAME]);
 };
 
 // removes the session cookie from the browser / header

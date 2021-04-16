@@ -5,7 +5,7 @@ const encrypt = async (data) => {
 };
 
 const decrypt = async (data) => {
-  return data && Iron.seal(data, process.env.SECRET_TOKEN, Iron.defaults);
+  return data && Iron.unseal(data, process.env.SECRET_TOKEN, Iron.defaults);
 };
 
 export { encrypt, decrypt };
