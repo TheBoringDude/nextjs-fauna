@@ -11,7 +11,7 @@ const api = async (req: NextApiRequest, res: NextApiResponse) => {
   if (session) {
     res.status(200).json({ session });
   } else {
-    res.status(200).json({ user: null });
+    res.status(200).json({ session: null });
   }
 };
 

@@ -1,17 +1,43 @@
 import { UserContextProps } from '@appTypes/user';
 
-import { createContext, ReactNode, useState } from 'react';
+import {
+  createContext,
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  useEffect,
+  useMemo,
+  useState
+} from 'react';
+import useSWR from 'swr';
 
-const UserContext = createContext<UserContextProps>({
-  user: null,
-  isLoading: true
+type ProviderContextProps = {
+  session?: UserContextProps;
+  setSession: Dispatch<SetStateAction<UserContextProps>>;
+};
+
+const UserContext = createContext<ProviderContextProps>({
+  session: {
+    user: null,
+    isLoading: true
+  },
+  setSession: () => {}
 });
 
 type AuthProviderProps = { children: ReactNode };
 const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [user, setUser] = useState<UserContextProps>(null);
+  const [session, setSession] = useState<UserContextProps>(null);
+  const value = useMemo(() => ({ session, setSession }), [session, setSession]);
 
-  return <UserContext.Provider value={user}>{children}</UserContext.Provider>;
+  const { data } = useSWR('/api/auth/user');
+
+  useEffect(() => {
+    if (data) {
+      setSession(data.session);
+    }
+  }, [data]);
+
+  return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 };
 
 export default AuthProvider;

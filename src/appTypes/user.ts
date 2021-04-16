@@ -1,6 +1,9 @@
 type UserContextProps = {
-  user: UserProps | null;
-  isLoading: boolean;
+  username: string | null;
+  email: string | null;
+  token: string | null;
+  // user: UserProps,
+  // isLoading: boolean
 };
 type UserProps = {
   username: string | null;

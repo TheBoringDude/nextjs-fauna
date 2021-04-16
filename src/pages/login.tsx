@@ -1,9 +1,12 @@
-import DefaultLayout from '@components/layouts/Default';
 import { FormEvent, useRef } from 'react';
+
+import DefaultLayout from '@components/layouts/Default';
+import { useSessionContext } from '@lib/provider/hooks';
 
 const LoginPage = () => {
   const email = useRef<HTMLInputElement>();
   const password = useRef<HTMLInputElement>();
+  const { setSession } = useSessionContext();
 
   const submitLogin = (e: FormEvent) => {
     e.preventDefault();
@@ -22,7 +25,7 @@ const LoginPage = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        setSession(data);
       })
       .catch((err) => console.error(err));
   };

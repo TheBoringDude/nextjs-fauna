@@ -1,3 +1,4 @@
+import { UserProps } from '@appTypes/user';
 import { serialize, parse } from 'cookie';
 import { NextApiRequest, NextApiResponse } from 'next';
 
@@ -20,7 +21,7 @@ const parseCookies = (req: NextApiRequest) => {
 };
 
 // creates a new session and store in a cookie
-const createSession = async (res: NextApiResponse, data) => {
+const createSession = async (res: NextApiResponse, data: UserProps) => {
   const token = await encrypt(data);
 
   const c = {
@@ -33,15 +34,12 @@ const createSession = async (res: NextApiResponse, data) => {
     ...c
   });
 
-  console.log(cookie);
-
   res.setHeader('Set-Cookie', cookie);
 };
 
 // gets the session from the cookie
 const getSession = async (req: NextApiRequest) => {
   const cookies = parseCookies(req);
-  console.log(await decrypt(cookies?.[TOKEN_NAME]));
   return await decrypt(cookies?.[TOKEN_NAME]);
 };
 
