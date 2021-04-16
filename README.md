@@ -15,6 +15,10 @@ This is just a sample implementation of NextJs and bare-FaunaDB authentication.
   yarn dev
   ```
 
+## TODO:
+
+- Add `FQL Queries` for setup
+
 ##
 
 ### &copy; 2021 | TheBoringDude
