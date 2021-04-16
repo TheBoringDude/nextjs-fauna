@@ -13,27 +13,32 @@ import useSWR from 'swr';
 
 type ProviderContextProps = {
   session?: UserContextProps;
-  setSession: Dispatch<SetStateAction<UserContextProps>>;
+  setSession?: Dispatch<SetStateAction<UserContextProps>>;
 };
 
-const UserContext = createContext<ProviderContextProps>({
-  session: {
-    user: null,
-    isLoading: true
-  },
-  setSession: () => {}
-});
+const NullUser: UserContextProps = {
+  user: null,
+  isLoading: true,
+  isLoggedIn: false
+};
+
+const UserContext = createContext<ProviderContextProps>({});
 
 type AuthProviderProps = { children: ReactNode };
 const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [session, setSession] = useState<UserContextProps>(null);
+  const [session, setSession] = useState<UserContextProps>(NullUser);
   const value = useMemo(() => ({ session, setSession }), [session, setSession]);
 
   const { data } = useSWR('/api/auth/user');
 
   useEffect(() => {
     if (data) {
-      setSession(data.session);
+      const sess: UserContextProps = {
+        user: data.session,
+        isLoading: false,
+        isLoggedIn: data.session !== null && data.session !== undefined // should be false if not logged in
+      };
+      setSession(sess);
     }
   }, [data]);
 

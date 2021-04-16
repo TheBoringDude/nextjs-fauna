@@ -3,6 +3,8 @@ import DefaultLayout from '../components/layouts/Default';
 
 export default function Home() {
   const user = useUser();
+  // this is also possible
+  // `const {user, isLoading, isLoggedIn} = useUser()`
 
   return (
     <DefaultLayout pageTitle="Home">
