@@ -29,7 +29,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   const [session, setSession] = useState<UserContextProps>(NullUser);
   const value = useMemo(() => ({ session, setSession }), [session, setSession]);
 
-  const { data } = useSWR('/api/auth/user');
+  const { data, error } = useSWR('/api/auth/user');
 
   useEffect(() => {
     if (data) {
@@ -39,6 +39,13 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
         isLoggedIn: data.session !== null && data.session !== undefined // should be false if not logged in
       };
       setSession(sess);
+    }
+    if (error) {
+      setSession({
+        user: null,
+        isLoading: false,
+        isLoggedIn: false,
+      })
     }
   }, [data]);
 
